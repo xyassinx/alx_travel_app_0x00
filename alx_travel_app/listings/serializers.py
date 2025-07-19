@@ -1,13 +1,10 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from .models import Listing, Booking, Review, User
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'phone_number', 'role', 'created_at']
-
 
 class ReviewSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(max_length=500)
@@ -15,7 +12,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'user', 'listing', 'rating', 'comment', 'created_at']
-
 
 class ListingSerializer(serializers.ModelSerializer):
     host = UserSerializer(read_only=True)
@@ -34,7 +30,6 @@ class ListingSerializer(serializers.ModelSerializer):
         if not reviews:
             return None
         return round(sum([r.rating for r in reviews]) / len(reviews), 1)
-
 
 class BookingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
